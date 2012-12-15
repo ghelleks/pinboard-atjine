@@ -1,0 +1,26 @@
+/*
+Theme Name:     Pinboard for atjine
+Theme URI:      http://github.com/ghelleks/pinboard-atjine
+Description:    A Technology Job Is No Excuse's Child theme for Pinboard
+Author:         Gunnar Hellekson
+Author URI:     http://gunnar.hellekson.com/about/
+Template:       pinboard
+Version:        0.1.0
+*/
+
+#slider .wp-post-image,
+#slider .entry-attachment {
+        position:relative;
+        top:0;
+        left:0;
+        width:100%;
+	height:300px;
+	opacity:0.4;
+}  
+
+#slider .entry-title {
+        background:rgba(0, 0, 0, .65);
+}
+
+/* Import our parent theme stylesheet */
+@import url("../pinboard/style.css");

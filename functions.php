@@ -1,0 +1,323 @@
+<?php
+
+/*
+Plugin Name: FWP+: Strip excerpts from syndicated posts
+Plugin URI: http://feedwordpress.radgeek.com/wiki/add-on-strip-html-from-syndicated-post-excerpts
+Description: removes excerpts from syndicated posts
+Version: 2010.1129
+Author: Charles Johnson
+Author URI: http://radgeek.com/
+License: GPL
+*/
+
+add_filter(
+/*hook=*/ 'syndicated_item_excerpt',
+/*function=*/ 'fwp_strip_excerpt',
+/*order=*/ 10,
+/*arguments=*/ 2
+);
+
+/**
+
+ fwp_strip_excerpt: Strips the excerpt for syndicated posts.
+
+ @param string $excerpt The current excerpt for the syndicated item.
+ @param SyndicatedPost $post An object representing the syndicated post.
+  The syndicated item data is contained in $post->item
+  The syndication feed channel data is contained in $post->feed
+  The subscription data is contained in $post->link
+ @return string The new content to give the syndicated item.
+
+/
+
+
+
+function fwp_strip_excerpt ($excerpt, $post) {
+	// Strip it
+	$excerpt = '';
+
+	// Send it back
+	return $excerpt;
+} /* fwp_strip_excerpt() */
+
+/*
+ * thumbs should go to the permalink, not the img itself
+ */
+function pinboard_post_image() {
+        if( has_post_thumbnail() ) : ?>
+                <figure>
+                        <a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>" class="colorbox">
+                                <?php the_post_thumbnail( ( pinboard_is_teaser() ? 'teaser-thumb' : 'image-thumb' ) ); ?>
+                        </a>
+                </figure>
+        <?php else :
+                // Retrieve the last image attached to the post
+                $args = array(
+                        'numberposts' => 1,
+                        'post_type' => 'attachment',
+                        'post_mime_type' => 'image',
+                        'post_parent' => get_the_ID()
+                );
+                $attachments = get_posts( $args );
+                if( count( $attachments ) ) {
+                        $attachment = $attachments[0];
+                        if( isset( $attachment ) && ! post_password_required() ) :
+                                $image = wp_get_attachment_image_src( $attachment->ID, 'full' ); ?>
+                                <figure>
+                        		<a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>" class="colorbox">
+                                                <?php echo wp_get_attachment_image( $attachment->ID, 'image-thumb' ); ?>
+                                        </a>
+                                </figure>
+                        <?php endif;
+                } elseif( false !== pinboard_get_first_image() ) {
+                        if( ! post_password_required() ) :
+                                $image = pinboard_get_first_image();
+                                if( false === $image[1] )
+                                        $image[1] = 695;
+                                if( false === $image[2] )
+                                        $image[2] = 430;
+                                $attachment = get_post( get_the_ID() ); ?>
+                                <figure>
+                        		<a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>" class="colorbox">
+                                                <img src="<?php echo $image[0]; ?>" alt="<?php the_title_attribute(); ?>" width="<?php echo $image[1]; ?>" height="<?php echo $image[2]; ?>" />
+                                        </a>
+                                </figure>
+                        <?php endif;
+                } else {
+                        the_content();
+                }
+        endif;
+}
+
+/**
+ * Call script functions in document head
+ *
+ * @since Pinboard 1.0
+ */
+function pinboard_call_scripts() { ?>
+<script>
+/* <![CDATA[ */
+	jQuery(document).ready(function($) {
+		$('#access .menu > li > a').each(function() {
+			var title = $(this).attr('title');
+			if(typeof title !== 'undefined' && title !== false) {
+				$(this).append('<br /> <span>'+title+'</span>');
+				$(this).removeAttr('title');
+			}
+		});
+		function pinboard_move_elements(container) {
+			if( container.hasClass('onecol') ) {
+				var thumb = $('.entry-thumbnail', container);
+				if('undefined' !== typeof thumb)
+					$('.entry-container', container).before(thumb);
+				var video = $('.entry-attachment', container);
+				if('undefined' !== typeof video)
+					$('.entry-container', container).before(video);
+				var gallery = $('.post-gallery', container);
+				if('undefined' !== typeof gallery)
+					$('.entry-container', container).before(gallery);
+				var meta = $('.entry-meta', container);
+				if('undefined' !== typeof meta)
+					$('.entry-container', container).after(meta);
+			}
+		}
+		function pinboard_restore_elements(container) {
+			if( container.hasClass('onecol') ) {
+				var thumb = $('.entry-thumbnail', container);
+				if('undefined' !== typeof thumb)
+					$('.entry-header', container).after(thumb);
+				var video = $('.entry-attachment', container);
+				if('undefined' !== typeof video)
+					$('.entry-header', container).after(video);
+				var gallery = $('.post-gallery', container);
+				if('undefined' !== typeof gallery)
+					$('.entry-header', container).after(gallery);
+				var meta = $('.entry-meta', container);
+				if('undefined' !== typeof meta)
+					$('.entry-header', container).append(meta);
+				else
+					$('.entry-header', container).html(meta.html());
+			}
+		}
+		if( ($(window).width() > 960) || ($(document).width() > 960) ) {
+			// Viewport is greater than tablet: portrait
+		} else {
+			$('#content .post').each(function() {
+				pinboard_move_elements($(this));
+			});
+		}
+		$(window).resize(function() {
+			if( ($(window).width() > 960) || ($(document).width() > 960) ) {
+				<?php if( is_category( pinboard_get_option( 'portfolio_cat' ) ) || ( is_category() && cat_is_ancestor_of( pinboard_get_option( 'portfolio_cat' ), get_queried_object() ) ) ) : ?>
+					$('#content .post').each(function() {
+						pinboard_restore_elements($(this));
+					});
+				<?php else : ?>
+					$('.page-template-template-full-width-php #content .post, .page-template-template-blog-full-width-php #content .post, .page-template-template-blog-four-col-php #content .post').each(function() {
+						pinboard_restore_elements($(this));
+					});
+				<?php endif; ?>
+			} else {
+				$('#content .post').each(function() {
+					pinboard_move_elements($(this));
+				});
+			}
+			if( ($(window).width() > 760) || ($(document).width() > 760) ) {
+				var maxh = 0;
+				$('#access .menu > li > a').each(function() {
+					if(parseInt($(this).css('height'))>maxh) {
+						maxh = parseInt($(this).css('height'));
+					}
+				});
+				$('#access .menu > li > a').css('height', maxh);
+			} else {
+				$('#access .menu > li > a').css('height', 'auto');
+			}
+		});
+		if( ($(window).width() > 760) || ($(document).width() > 760) ) {
+			var maxh = 0;
+			$('#access .menu > li > a').each(function() {
+				var title = $(this).attr('title');
+				if(typeof title !== 'undefined' && title !== false) {
+					$(this).append('<br /> <span>'+title+'</span>');
+					$(this).removeAttr('title');
+				}
+				if(parseInt($(this).css('height'))>maxh) {
+					maxh = parseInt($(this).css('height'));
+				}
+			});
+			$('#access .menu > li > a').css('height', maxh);
+			<?php if( pinboard_get_option( 'fancy_dropdowns' ) ) : ?>
+				$('#access li').mouseenter(function() {
+					$(this).children('ul').css('display', 'none').stop(true, true).fadeIn(250).css('display', 'block').children('ul').css('display', 'none');
+				});
+				$('#access li').mouseleave(function() {
+					$(this).children('ul').stop(true, true).fadeOut(250).css('display', 'block');
+				});
+			<?php endif; ?>
+		} else {
+			$('#access li').each(function() {
+				if($(this).children('ul').length)
+					$(this).append('<span class="drop-down-toggle"><span class="drop-down-arrow"></span></span>');
+			});
+			$('.drop-down-toggle').click(function() {
+				$(this).parent().children('ul').slideToggle(250);
+			});
+		}
+		<?php if( ( is_home() && ! is_paged() ) || ( is_front_page() && ! is_home() ) || is_page_template( 'template-landing-page.php' ) ) : ?>
+			$('#slider').flexslider({
+				selector: '.slides > li',
+				video: true,
+				prevText: '&larr;',
+				nextText: '&rarr;',
+				pausePlay: true,
+				pauseText: '||',
+				playText: '>',
+				before: function() {
+					$('#slider .entry-title').hide();
+				},
+
+				after: function() {
+					$('#slider .entry-title').fadeIn();
+				}
+			});
+			$('#slider .entry-title').show();
+		<?php endif; ?>
+		<?php if( ! is_singular() || is_page_template( 'template-blog.php' ) || is_page_template( 'template-blog-full-width.php' ) || is_page_template( 'template-blog-four-col.php' ) || is_page_template( 'template-blog-left-sidebar.php' ) || is_page_template( 'template-blog-no-sidebars.php' ) || is_page_template( 'template-blog-no-sidebars.php' ) || is_page_template( 'template-portfolio.php' ) || is_page_template( 'template-portfolio-right-sidebar.php' ) || is_page_template( 'template-portfolio-four-col.php' ) || is_page_template( 'template-portfolio-left-sidebar.php' ) || is_page_template( 'template-portfolio-no-sidebars.php' ) ) : ?>
+			var $content = $('.entries');
+			$content.imagesLoaded(function() {
+				$content.masonry({
+					itemSelector : '.post',
+					columnWidth : function( containerWidth ) {
+						return containerWidth / 12;
+					},
+				});
+			});
+			<?php if( ( ! is_singular() && ! is_paged() ) || ( ( is_page_template( 'template-blog.php' ) || is_page_template( 'template-blog-full-width.php' ) || is_page_template( 'template-blog-four-col.php' ) || is_page_template( 'template-blog-left-sidebar.php' ) || is_page_template( 'template-blog-no-sidebars.php' ) || is_page_template( 'template-blog-no-sidebars.php' ) || is_page_template( 'template-portfolio.php' ) || is_page_template( 'template-portfolio-right-sidebar.php' ) || is_page_template( 'template-portfolio-four-col.php' ) || is_page_template( 'template-portfolio-left-sidebar.php' ) || is_page_template( 'template-portfolio-no-sidebars.php' ) ) && ! is_paged() ) ) : ?>
+				<?php if( 'ajax' == pinboard_get_option( 'posts_nav' ) ) : ?>
+					var nav_link = $('#posts-nav .nav-all a');
+					if(!nav_link.length)
+						var nav_link = $('#posts-nav .nav-next a');
+					if(nav_link.length) {
+						nav_link.addClass('ajax-load');
+						nav_link.html('Load more posts');
+						nav_link.click(function() {
+							var href = $(this).attr('href');
+							nav_link.html('<img src="<?php echo get_template_directory_uri(); ?>/images/loading.gif" style="float: none; vertical-align: middle;" /> Loading more posts &#8230;');
+							$.get(href, function(data) {
+								var helper = document.createElement('div');
+								helper = $(helper);
+								helper.html(data);
+								var content = $('#content .entries', helper);
+								$('.entries').append(content.html());
+								var nav_url = $('#posts-nav .nav-next a', helper).attr('href');
+								if(typeof nav_url !== 'undefined') {
+									nav_link.attr('href', nav_url);
+									nav_link.html('Load more posts');
+								} else {
+									$('#posts-nav').html('<span class="ajax-load">There are no more posts to display.</span>');
+								}
+							});
+							return false;
+						});
+					}
+				<?php elseif( 'infinite' == pinboard_get_option( 'posts_nav' ) ) : ?>
+					$('#content .entries').infinitescroll({
+						debug           : false,
+						nextSelector    : "#posts-nav .nav-all a, #posts-nav .nav-next a",
+						loadingImg      : ( window.devicePixelRatio > 1 ? "<?php echo get_template_directory_uri(); ?>/images/ajax-loading_2x.gif" : "<?php echo get_template_directory_uri(); ?>/images/ajax-loading.gif" ),
+						loadingText     : "Loading more posts &#8230;",
+						donetext        : "There are no more posts to display.",
+						navSelector     : "#posts-nav",
+						contentSelector : "#content .entries",
+						itemSelector    : "#content .entries .post",
+					}, function(entries){
+						var $entries = $( entries ).css({ opacity: 0 });
+						$entries.imagesLoaded(function(){
+							$entries.animate({ opacity: 1 });
+							$content.masonry( 'appended', $entries, true );
+						});
+						if( ($(window).width() > 960) || ($(document).width() > 960) ) {
+							// Viewport is greater than tablet: portrait
+						} else {
+							$('#content .post').each(function() {
+								pinboard_move_elements($(this));
+							});
+						}
+						$('audio,video').mediaelementplayer({
+							videoWidth: '100%',
+							videoHeight: '100%',
+							audioWidth: '100%',
+							alwaysShowControls: true,
+							features: ['playpause','progress','tracks','volume'],
+							videoVolume: 'horizontal'
+						});
+						$(".entry-attachment, .entry-content").fitVids({ customSelector: "iframe, object, embed"});
+						<?php if( pinboard_get_option( 'lightbox' ) ) : ?>
+							$('.entry-content a[href$=".jpg"],.entry-content a[href$=".jpeg"],.entry-content a[href$=".png"],.entry-content a[href$=".gif"],a.colorbox').colorbox();
+						<?php endif; ?>
+					});
+				<?php endif; ?>
+			<?php endif; ?>
+		<?php endif; ?>
+		$('audio,video').mediaelementplayer({
+			videoWidth: '100%',
+			videoHeight: '100%',
+			audioWidth: '100%',
+			alwaysShowControls: true,
+			features: ['playpause','progress','tracks','volume'],
+			videoVolume: 'horizontal'
+		});
+		$(".entry-attachment, .entry-content").fitVids({ customSelector: "iframe, object, embed"});
+	});
+	jQuery(window).load(function() {
+		<?php if( pinboard_get_option( 'lightbox' ) ) : ?>
+			jQuery('.entry-content a[href$=".jpg"],.entry-content a[href$=".jpeg"],.entry-content a[href$=".png"],.entry-content a[href$=".gif"],a.colorbox').colorbox();
+		<?php endif; ?>
+	});
+/* ]]> */
+</script>
+<?php
+}
+
+?>
