@@ -8,6 +8,17 @@ Template:       pinboard
 Version:        0.1.0
 */
 
+
+/*div.social-bookmarks { clear:both; } */
+div.entry-tags { display:inline-block; vertical-align:text-top; width: 50%; }
+div.entry-tags h3 { }
+div.yarpp-related { display:inline-block; vertical-align:text-top; width: 50%; }
+div.yarpp-related h3 { }
+
+div.yarpp-thumbnails-horizontal a.yarpp-thumbnail span.yarpp-thumbnail-title  { overflow: visible; }
+div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
+a.yarpp-thumbnail img { margin-left: auto; margin-right: auto; border: 1px solid rgba(127, 127, 127, 0.1) }
+
 #slider .wp-post-image,
 #slider .entry-attachment {
         position:relative;
