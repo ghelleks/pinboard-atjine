@@ -1,13 +1,10 @@
 <?php
 
+/* Let YARPP build thumbnails */
+define('YARPP_GENERATE_THUMBNAILS', true);
+
 /*
-Plugin Name: FWP+: Strip excerpts from syndicated posts
-Plugin URI: http://feedwordpress.radgeek.com/wiki/add-on-strip-html-from-syndicated-post-excerpts
-Description: removes excerpts from syndicated posts
-Version: 2010.1129
-Author: Charles Johnson
-Author URI: http://radgeek.com/
-License: GPL
+FWP+: Strip excerpts from syndicated posts
 */
 
 add_filter(
@@ -28,7 +25,7 @@ add_filter(
   The subscription data is contained in $post->link
  @return string The new content to give the syndicated item.
 
-/
+**/
 
 
 
@@ -41,7 +38,7 @@ function fwp_strip_excerpt ($excerpt, $post) {
 } /* fwp_strip_excerpt() */
 
 /*
- * thumbs should go to the permalink, not the img itself
+ * Overridden because thumbs should go to the permalink, not the img itself
  */
 function pinboard_post_image() {
         if( has_post_thumbnail() ) : ?>
@@ -90,7 +87,7 @@ function pinboard_post_image() {
 }
 
 /**
- * Call script functions in document head
+ * Slider should display title of the first item instead of hiding it
  *
  * @since Pinboard 1.0
  */
