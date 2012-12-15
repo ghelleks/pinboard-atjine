@@ -5,7 +5,9 @@ A child theme of the excellent Pinboard theme.
 
 ## Features ##
 
-* uses the body, rather than excerpts, for Status posts
+* uses the body, rather than excerpts, for posts in the grid
+* clicking the thumbnail in a grid goes to the post, not the image
+* fixed bug in slider: the first slide's title was hidden until the second iteration of the loop. It's now shown.
 
 ## Installation ##
 
