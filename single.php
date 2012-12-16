@@ -20,7 +20,7 @@
 						<footer class="entry-utility">
 							<?php wp_link_pages( array( 'before' => '<p class="post-pagination">' . __( 'Pages:', 'pinboard' ), 'after' => '</p>' ) ); ?>
 							<?php pinboard_social_bookmarks(); ?>
-							<?php the_tags( '<div class="entry-tags"><h3>Filed under:</h3>', ' ', '</div>' ); ?>
+							<?php the_tags( '<div class="entry-tags"><h3>Filed under...</h3>', ' ', '</div>' ); ?>
 							<?php pinboard_post_author(); ?>
 <?php related_posts(); ?>
 						</footer><!-- .entry-utility -->

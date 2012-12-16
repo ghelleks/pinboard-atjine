@@ -8,17 +8,33 @@ Template:       pinboard
 Version:        0.1.0
 */
 
-
-/*div.social-bookmarks { clear:both; } */
-div.entry-tags { display:inline-block; vertical-align:text-top; width: 50%; }
+/* put the tags and the YARPP related enties side-by-side */
+div.entry-tags { 
+	margin: 0;
+	display:inline-block;
+	vertical-align:text-top; 
+	width: 50%; 
+}
 div.entry-tags h3 { }
-div.yarpp-related { display:inline-block; vertical-align:text-top; width: 50%; }
+
+div.yarpp-related { 
+	display:inline-block; 
+	vertical-align:text-top; 
+	width: 50%; 
+}
 div.yarpp-related h3 { }
 
+/* don't truncate the titles and border the images, not the images and the title */
 div.yarpp-thumbnails-horizontal a.yarpp-thumbnail span.yarpp-thumbnail-title  { overflow: visible; }
 div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
-a.yarpp-thumbnail img { margin-left: auto; margin-right: auto; border: 1px solid rgba(127, 127, 127, 0.1) }
 
+/* show the thumbnails at 120px wide, not 67% width */
+.page-template-template-full-width-php .hentry.onecol a.yarpp-thumbnail img.wp-post-image { 
+   margin-left: auto; margin-right: auto; border: 1px solid rgba(127, 127, 127, 0.1) ;
+   max-width: none;
+}
+
+/* make slider images less hilariously large and slightly transparent */
 #slider .wp-post-image,
 #slider .entry-attachment {
         position:relative;
@@ -29,6 +45,7 @@ a.yarpp-thumbnail img { margin-left: auto; margin-right: auto; border: 1px solid
 	opacity:0.4;
 }  
 
+/* make the slider titles more opaque */
 #slider .entry-title {
         background:rgba(0, 0, 0, .65);
 }
