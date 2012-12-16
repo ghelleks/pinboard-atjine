@@ -4,11 +4,12 @@
 			<?php pinboard_post_thumbnail(); ?>
 		<?php endif; ?>
 		<div class="entry-container">
-		<?php if( 'full-width' == pinboard_get_option( 'layout' ) || is_category( pinboard_get_option( 'portfolio_cat' ) ) || ( is_category() && cat_is_ancestor_of( pinboard_get_option( 'portfolio_cat' ), get_queried_object() ) ) ) : ?>
 				<header class="entry-header">
+                                <<?php pinboard_title_tag( 'post' ); ?> class="entry-title"><a href="<?php the_permalink(); ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></<?php pinboard_title_tag( 'post' ); ?>>
+		<?php if( 'full-width' == pinboard_get_option( 'layout' ) || is_category( pinboard_get_option( 'portfolio_cat' ) ) || ( is_category() && cat_is_ancestor_of( pinboard_get_option( 'portfolio_cat' ), get_queried_object() ) ) ) : ?>
 					<?php pinboard_entry_meta(); ?>
-				</header><!-- .entry-header -->
 			<?php endif; ?>
+				</header><!-- .entry-header -->
 			<?php if( ( 'full-width' == pinboard_get_option( 'layout' ) || is_category( pinboard_get_option( 'portfolio_cat' ) ) || ( is_category() && cat_is_ancestor_of( pinboard_get_option( 'portfolio_cat' ), get_queried_object() ) ) ) && ! pinboard_is_teaser() ) : ?>
 				<?php pinboard_post_thumbnail(); ?>
 			<?php endif; ?>
