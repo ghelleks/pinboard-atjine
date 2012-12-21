@@ -8,6 +8,10 @@ Template:       pinboard
 Version:        0.1.0
 */
 
+div.entry-content div#gallery-1 dl.gallery-item {
+   width: 30%;
+}
+
 /* put the tags and the YARPP related enties side-by-side */
 div.entry-tags { 
 	margin: 0;
