@@ -13,7 +13,7 @@
 			<?php if( ( 'full-width' == pinboard_get_option( 'layout' ) || is_category( pinboard_get_option( 'portfolio_cat' ) ) || ( is_category() && cat_is_ancestor_of( pinboard_get_option( 'portfolio_cat' ), get_queried_object() ) ) ) && ! pinboard_is_teaser() ) : ?>
 				<?php pinboard_post_gallery(); ?>
 			<?php endif; ?>
-			<?php if( ! is_category( pinboard_get_option( 'portfolio_cat' ) ) && ! ( is_category() && cat_is_ancestor_of( pinboard_get_option( 'portfolio_cat' ), get_queried_object() ) ) ) : ?>
+			<?php if( ! is_category( pinboard_get_option( 'portfolio_cat' ) ) && ! ( is_category() && cat_is_ancestor_of( pinboard_get_option( 'portfolio_cat' ), get_queried_object() ) ) && ! pinboard_is_teaser() ) : ?>
 				<div class="entry-summary">
 					<?php the_content(); ?>
 				</div><!-- .entry-summary -->
