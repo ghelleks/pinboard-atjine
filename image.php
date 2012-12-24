@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 	<div id="container">
-		<section id="content" <?php pinboard_content_class(); ?>>
+		<section id="content" class="column twothirdcol">
 			<?php if( have_posts() ) : the_post(); ?>
 				<article <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 					<div class="entry">
@@ -9,20 +9,25 @@
 							<?php pinboard_entry_meta(); ?>
 						</header><!-- .entry-header -->
 						<div class="entry-content">
-							<?php if( has_post_format( 'audio' ) ) : ?>
-								<p><?php pinboard_post_audio(); ?></p>
-							<?php elseif( has_post_format( 'video' ) ) : ?>
-								<p><?php pinboard_post_video(); ?></p>
-							<?php endif; ?>
-							<?php the_content(); ?>
+							<figure class="entry-attachment">
+								<a href="<?php echo wp_get_attachment_url(); ?>" title="<?php the_title_attribute(); ?>" rel="attachment">
+									<?php echo wp_get_attachment_image( $post->ID, 'image-thumb' ); ?>
+								</a>
+								<?php if ( ! empty( $post->post_excerpt ) ) : ?>
+									<figcaption class="entry-caption">
+										<?php the_excerpt(); ?>
+									</figcaption><!-- .entry-caption -->
+								<?php endif; ?>
+							</figure><!-- .entry-attachment -->
 							<div class="clear"></div>
 						</div><!-- .entry-content -->
+                                                        <?php if ( function_exists('exifography_display_exif') ) : ?>
+                                                        	<div class="entry-header"><?php echo exifography_display_exif('all', $post->ID); ?></div>
+                                                        <?php endif; ?>
 						<footer class="entry-utility">
+							<?php pinboard_attachment_nav(); ?>
 							<?php wp_link_pages( array( 'before' => '<p class="post-pagination">' . __( 'Pages:', 'pinboard' ), 'after' => '</p>' ) ); ?>
 							<?php pinboard_social_bookmarks(); ?>
-							<?php the_tags( '<div class="entry-tags"><h3>Filed under...</h3>', ' ', '</div>' ); ?>
-<?php if (function_exists("related_posts")) { related_posts(); }  ?>
-							<?php pinboard_post_author(); ?>
 						</footer><!-- .entry-utility -->
 					</div><!-- .entry -->
 					<?php comments_template(); ?>

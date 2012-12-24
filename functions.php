@@ -43,7 +43,7 @@ function fwp_strip_excerpt ($excerpt, $post) {
 function pinboard_post_image() {
         if( has_post_thumbnail() ) : ?>
                 <figure>
-                        <a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>" class="colorbox">
+                        <a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>" >
                                 <?php the_post_thumbnail( ( pinboard_is_teaser() ? 'teaser-thumb' : 'image-thumb' ) ); ?>
                         </a>
                 </figure>
@@ -61,7 +61,7 @@ function pinboard_post_image() {
                         if( isset( $attachment ) && ! post_password_required() ) :
                                 $image = wp_get_attachment_image_src( $attachment->ID, 'full' ); ?>
                                 <figure>
-                        		<a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>" class="colorbox">
+                        		<a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>">
                                                 <?php echo wp_get_attachment_image( $attachment->ID, 'image-thumb' ); ?>
                                         </a>
                                 </figure>
@@ -75,7 +75,7 @@ function pinboard_post_image() {
                                         $image[2] = 430;
                                 $attachment = get_post( get_the_ID() ); ?>
                                 <figure>
-                        		<a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>" class="colorbox">
+                        		<a href="<?php echo the_permalink() ?>" title="<?php the_title_attribute(); ?>">
                                                 <img src="<?php echo $image[0]; ?>" alt="<?php the_title_attribute(); ?>" width="<?php echo $image[1]; ?>" height="<?php echo $image[2]; ?>" />
                                         </a>
                                 </figure>
@@ -291,7 +291,7 @@ function pinboard_call_scripts() { ?>
 						});
 						$(".entry-attachment, .entry-content").fitVids({ customSelector: "iframe, object, embed"});
 						<?php if( pinboard_get_option( 'lightbox' ) ) : ?>
-							$('.entry-content a[href$=".jpg"],.entry-content a[href$=".jpeg"],.entry-content a[href$=".png"],.entry-content a[href$=".gif"],a.colorbox').colorbox();
+							jQuery('a.colorbox').colorbox({maxHeight:"90%",maxWidth:"90%"});
 						<?php endif; ?>
 					});
 				<?php endif; ?>
@@ -309,7 +309,7 @@ function pinboard_call_scripts() { ?>
 	});
 	jQuery(window).load(function() {
 		<?php if( pinboard_get_option( 'lightbox' ) ) : ?>
-			jQuery('.entry-content a[href$=".jpg"],.entry-content a[href$=".jpeg"],.entry-content a[href$=".png"],.entry-content a[href$=".gif"],a.colorbox').colorbox();
+			jQuery('a.colorbox').colorbox({maxHeight:"90%",maxWidth:"90%"});
 		<?php endif; ?>
 	});
 /* ]]> */

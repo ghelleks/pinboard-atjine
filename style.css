@@ -8,11 +8,21 @@ Template:       pinboard
 Version:        0.1.0
 */
 
+/* Import our parent theme stylesheet */
+@import url("../pinboard/style.css");
+
+/* make attachment pages display centered  */
+.page-template-template-full-width-php .hentry.onecol figure.entry-attachment {
+   float: none;
+   margin: auto;
+}
+
+/* for NextGen gallery items, which we don't use anymore */
 div.entry-content div#gallery-1 dl.gallery-item {
    width: 30%;
 }
 
-/* put the tags and the YARPP related enties side-by-side */
+/* put the tags and the YARPP related enties side-by-side  */
 div.entry-tags { 
 	margin: 0;
 	display:inline-block;
@@ -28,11 +38,11 @@ div.yarpp-related {
 }
 div.yarpp-related h3 { }
 
-/* don't truncate the titles and border the images, not the images and the title */
+/* don't truncate the titles and border the images, not the images and the title  */
 div.yarpp-thumbnails-horizontal a.yarpp-thumbnail span.yarpp-thumbnail-title  { overflow: visible; }
 div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
 
-/* show the thumbnails at 120px wide, not 67% width */
+/* show the yarpp thumbnails at 120px wide, not 67% width  */
 .page-template-template-full-width-php .hentry.onecol a.yarpp-thumbnail img.wp-post-image { 
    margin-left: auto; margin-right: auto; border: 1px solid rgba(127, 127, 127, 0.1) ;
    max-width: none;
@@ -54,5 +64,3 @@ div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
         background:rgba(0, 0, 0, .65);
 }
 
-/* Import our parent theme stylesheet */
-@import url("../pinboard/style.css");
