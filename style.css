@@ -11,6 +11,7 @@ Version:        0.1.0
 /* Import our parent theme stylesheet */
 @import url("../pinboard/style.css");
 
+/* center attachment photos */
 .page-template-template-full-width-php .hentry.onecol figure.entry-attachment {
    float: none;
    margin: auto;
