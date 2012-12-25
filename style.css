@@ -11,15 +11,58 @@ Version:        0.1.0
 /* Import our parent theme stylesheet */
 @import url("../pinboard/style.css");
 
-/* make attachment pages display centered  */
 .page-template-template-full-width-php .hentry.onecol figure.entry-attachment {
    float: none;
    margin: auto;
 }
 
-/* for NextGen gallery items, which we don't use anymore */
-div.entry-content div#gallery-1 dl.gallery-item {
-   width: 30%;
+/* 
+ * Lazyest Gallery stuff
+ */
+/* make attachment pages display centered  */
+/* remove the godawful folders display from Lazyest Gallery */
+.lg_gallery .dir_view .folder { display:none; }
+div.lg_gallery div.top_navigator { display:none; }
+
+/* based on pinboard "entry" */
+.lg_gallery .dir_view  li.lgf-item {
+   float: left;
+   display: block;
+   background: white;
+   border-bottom: #DDD 1px solid;
+   box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+   -webkit-margin-before: 1em;
+   -webkit-margin-after: 1em;
+   -webkit-margin-start: 40px;
+   -webkit-margin-end: 40px;
+   width: 250px;
+}
+
+.lg_thumb {
+   padding: inherit;
+   margin: inherit;
+}
+
+div.lg_folder_thumb_image img.thumb {
+   width: 100%;
+   height: 205;
+   margin-left: auto;
+   margin-right: auto;
+   height: auto;
+   border: none;
+}
+
+div.lg_thumb_caption {
+   padding: 6.1%;
+   font-family: "Oswald",sans-serif;
+   font-weight: 300;
+   letter-spacing: 1px;
+   overflow: hidden;
+   line-height: 1.62em;
+}
+
+div.lg_thumb_caption a {
+   font-size: 24px;
 }
 
 /* put the tags and the YARPP related enties side-by-side  */
