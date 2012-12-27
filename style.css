@@ -36,7 +36,8 @@ div.lg_gallery div.top_navigator { display:none; }
    -webkit-margin-after: 1em;
    -webkit-margin-start: 40px;
    -webkit-margin-end: 40px;
-   width: 250px;
+   width: 30%; 
+   margin: 15px;
 }
 
 .lg_thumb {
@@ -63,7 +64,7 @@ div.lg_thumb_caption {
 }
 
 div.lg_thumb_caption a {
-   font-size: 24px;
+   font-size: 20px;
 }
 
 /* put the tags and the YARPP related enties side-by-side  */
