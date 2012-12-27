@@ -23,7 +23,8 @@ Version:        0.1.0
 /* make attachment pages display centered  */
 /* remove the godawful folders display from Lazyest Gallery */
 .lg_gallery .dir_view .folder { display:none; }
-div.lg_gallery div.top_navigator { display:none; }
+.lg_gallery .top_navigator { display:none; }
+
 
 /* based on pinboard "entry" */
 .lg_gallery .dir_view  li.lgf-item {
@@ -36,8 +37,8 @@ div.lg_gallery div.top_navigator { display:none; }
    -webkit-margin-after: 1em;
    -webkit-margin-start: 40px;
    -webkit-margin-end: 40px;
-   width: 30%; 
-   margin: 15px;
+   width: 250px;
+   margin: 3%;
 }
 
 .lg_thumb {

@@ -309,11 +309,11 @@ function pinboard_call_scripts() { ?>
 	});
 	jQuery(window).load(function() {
 		<?php if( pinboard_get_option( 'lightbox' ) ) : ?>
-			jQuery('a.lg,a.colorbox').colorbox({
-				maxHeight:"90%",
-				maxWidth:"90%",
+			jQuery("a[rel*='lightbox'],a.colorbox").colorbox({
+				maxHeight:"95%",
+				maxWidth:"95%",
 				transition:"elastic",
-				speed:100
+				speed:150
 			});
 		<?php endif; ?>
 	});
