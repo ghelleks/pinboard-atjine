@@ -1,5 +1,45 @@
 <?php
 
+/* fix possibly broken URLs for oembed */
+add_filter('the_content', 'pinboard_ensure_oembed', 1);
+function pinboard_ensure_oembed($content) {
+    return preg_replace('/^\s*<[^>]*>(http.*)<[^>]*>\s*$/im', '\1' . "\n", $content);
+}
+
+add_action('init', 'pinboard_atjine_register_scripts');
+/*add_action('wp_enqueue_scripts', 'pinboard_atjine_print_scripts');  */
+
+if ( !function_exists( 'pinboard_atjine_register_scripts' ) ) {
+function pinboard_atjine_register_scripts() {
+	wp_register_script('pinboard_twitter', 'http://platform.twitter.com/widgets.js', false, false, true);
+} }
+
+if ( !function_exists( 'pinboard_atjine_print_scripts' ) ) {
+function pinboard_atjine_print_scripts() {
+	wp_print_scripts('pinboard_twitter');
+} }
+
+/* make twitter oembed width more cooperative */
+if ( !function_exists( 'twitter_no_width' ) ) {
+function twitter_no_width($html, $url, $args) {
+        if (false !== strpos($html, 'class="twitter-tweet"') ) {
+                $html = str_replace('width="550"','width="290"',$html);
+        }
+        return $html;
+} }
+add_filter('embed_oembed_html','twitter_no_width',10,3);
+
+/* strip twitter scripts to make everything faster and less beautiful without changing the oembed class*/
+if ( !function_exists( 'twitter_no_scripts' ) ) {
+function twitter_no_scripts($html, $url, $args) {
+/*  <blockquote class="twitter-tweet" width="550"><p>"Losers exist. Don’t hire them." ...or work for them, esp. those compelled to write a screed like this. Gross. <a href="http://t.co/tOGQCTd6" title="http://pocket.co/spHoC">pocket.co/spHoC</a></p>&mdash; Gunnar Hellekson (@ghelleks) <a href="https://twitter.com/ghelleks/status/284678493806149633" data-datetime="2012-12-28T15:13:36+00:00">December 28, 2012</a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>  */
+	if (false !== strpos($html, 'class="twitter-tweet"') ) {
+		$html = preg_replace('/<script[^>]*><\/script>/', '', $html); 
+	}
+	return $html;
+} }
+add_filter('embed_oembed_html','twitter_no_scripts',10,3);
+
 /* Let YARPP build thumbnails */
 define('YARPP_GENERATE_THUMBNAILS', true);
 
@@ -92,8 +132,8 @@ function pinboard_post_image() {
  * @since Pinboard 1.0
  */
 function pinboard_call_scripts() { ?>
-<script>
-/* <![CDATA[ */
+
+<script async type="text/javascript">
 	jQuery(document).ready(function($) {
 		$('#access .menu > li > a').each(function() {
 			var title = $(this).attr('title');
@@ -226,7 +266,7 @@ function pinboard_call_scripts() { ?>
 				$content.masonry({
 					itemSelector : '.post',
 					columnWidth : function( containerWidth ) {
-						return containerWidth / 12;
+                                               return containerWidth / 12;
 					},
 				});
 			});
@@ -306,8 +346,6 @@ function pinboard_call_scripts() { ?>
 			videoVolume: 'horizontal'
 		});
 		$(".entry-attachment, .entry-content").fitVids({ customSelector: "iframe, object, embed"});
-	});
-	jQuery(window).load(function() {
 		<?php if( pinboard_get_option( 'lightbox' ) ) : ?>
 			jQuery("a[rel*='lightbox'],a.colorbox").colorbox({
 				maxHeight:"95%",
@@ -316,10 +354,17 @@ function pinboard_call_scripts() { ?>
 				speed:150
 			});
 		<?php endif; ?>
+/* trying to get masonry to reflow after the twitter embed javascript loads */
+/*
+                jQuery('.entries').imagesLoaded(function() {
+ 			jQuery('.entries').masonry('reload');
+			// jQuery('.entries').masonry //append( jQuery('.post') ).masonry( 'appended', $content, true ); 
+		});
+*/
 	});
-/* ]]> */
 </script>
 <?php
 }
+
 
 ?>

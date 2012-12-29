@@ -11,6 +11,22 @@ Version:        0.1.0
 /* Import our parent theme stylesheet */
 @import url("../pinboard/style.css");
 
+div.twt-tweet .twt-media .e-content {
+   display: none!important;
+}
+
+/* fix twitter embeds */
+div.twitter-tweet-rendered {
+   font: inherit; 
+    zoom: 0;
+    width: 100%!important;
+}
+blockquote.twt-tweet:before, blockquote.twt-tweet:after { content: none; }
+blockquote.twt-tweet {
+   font: inherit; 
+    zoom: 0!important;;
+}
+
 /* center attachment photos */
 .page-template-template-full-width-php .hentry.onecol figure.entry-attachment {
    float: none;
@@ -24,7 +40,6 @@ Version:        0.1.0
 /* remove the godawful folders display from Lazyest Gallery */
 .lg_gallery .dir_view .folder { display:none; }
 .lg_gallery .top_navigator { display:none; }
-
 
 /* based on pinboard "entry" */
 .lg_gallery .dir_view  li.lgf-item {
