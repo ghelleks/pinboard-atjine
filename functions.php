@@ -20,14 +20,17 @@ function pinboard_atjine_print_scripts() {
 } }
 
 /* make twitter oembed width more cooperative */
-if ( !function_exists( 'twitter_no_width' ) ) {
-function twitter_no_width($html, $url, $args) {
+if ( !function_exists( 'twitter_html_cleanup' ) ) {
+function twitter_html_cleanup($html, $url, $args) {
         if (false !== strpos($html, 'class="twitter-tweet"') ) {
+		// make width match the theme
                 $html = str_replace('width="550"','width="290"',$html);
+		// remove redundant author info
+                $html = str_replace('&mdash; Gunnar Hellekson (@ghelleks)', '',$html);
         }
         return $html;
 } }
-add_filter('embed_oembed_html','twitter_no_width',10,3);
+add_filter('embed_oembed_html','twitter_html_cleanup',10,3);
 
 /* strip twitter scripts to make everything faster and less beautiful without changing the oembed class*/
 if ( !function_exists( 'twitter_no_scripts' ) ) {

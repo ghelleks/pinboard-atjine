@@ -11,27 +11,60 @@ Version:        0.1.0
 /* Import our parent theme stylesheet */
 @import url("../pinboard/style.css");
 
-div.twt-tweet .twt-media .e-content {
-   display: none!important;
+/*
+ * Generic theme stuff
+ * /
+
+/* make the site title height more reasonable */
+#site-title, #site-description { line-height: 75px; margin-bottom: 0px; }
+#social-media-icons { margin-top: 25px; }
+#header #searchform { margin-top: 25px; }
+
+/* fix the width */
+#wrapper {
+	max-width: 95%;
+}
+
+/* writing and quotes should be a little more roomy. */
+section#content.onecol article.format-standard .entry-content,
+section#content.onecol article.format-quote .entry-content {
+	font-size: 130%;
+	line-height: 1.75em;
+}
+
+/* center attachment and "image" post format photos */
+.page-template-template-full-width-php article.format-image .entry-content img,
+.page-template-template-full-width-php .hentry.onecol figure.entry-attachment {
+   float: none;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+/* scoot quote links in thumbnail view over to the right so they look more quote-y */
+article.format-quote p a[rel=bookmark] {
+   float: right;
+}
+
+/* add clever arrow to twitter links at the bottom of the thumbnail to indicate clicky-ness */
+a[data-datetime]:before { content: "→ "; }
+blockquote.twitter-tweet a[data-datetime] { 
+  float:right; font-style: normal; 
+font-family: 'Open Sans', sans-serif;
+font-size: 13px;
 }
 
 /* fix twitter embeds */
-div.twitter-tweet-rendered {
-   font: inherit; 
-    zoom: 0;
-    width: 100%!important;
-}
-blockquote.twt-tweet:before, blockquote.twt-tweet:after { content: none; }
-blockquote.twt-tweet {
-   font: inherit; 
-    zoom: 0!important;;
-}
+/* don't show twitter extra media stuff until we can figure out how to get masonry to reflow it properly.. */
+div.twt-tweet .twt-media .e-content { display: none!important; }
 
-/* center attachment photos */
-.page-template-template-full-width-php .hentry.onecol figure.entry-attachment {
-   float: none;
-   margin: auto;
-}
+/* get rid of the standard big-ass quotation marks around blockquotes and use all the width we have */
+div.twitter-tweet-rendered { font: inherit; zoom: 0; width: 100%!important; }
+blockquote.twt-tweet:before, blockquote.twt-tweet:after { content: none; }
+/* obey our font rules */
+blockquote.twt-tweet { font: inherit; zoom: 0!important; }
+/* prevent long urls from bleeding out of their box */
+blockquote.twitter-tweet p a { word-wrap: break-word; }
 
 /* 
  * Lazyest Gallery stuff
@@ -83,6 +116,10 @@ div.lg_thumb_caption a {
    font-size: 20px;
 }
 
+/*
+ * YARPP Stuff
+ */
+
 /* put the tags and the YARPP related enties side-by-side  */
 div.entry-tags { 
 	margin: 0;
@@ -109,6 +146,10 @@ div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
    max-width: none;
 }
 
+/*
+ * Slider stuff
+ */
+
 /* make slider images less hilariously large and slightly transparent */
 #slider .wp-post-image,
 #slider .entry-attachment {
@@ -116,7 +157,7 @@ div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
         top:0;
         left:0;
         width:100%;
-	height:300px;
+	height:200px;
 	opacity:0.4;
 }  
 
