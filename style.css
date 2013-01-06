@@ -15,6 +15,18 @@ Version:        0.1.0
  * Generic theme stuff
  * /
 
+/* make the code blocks look a lot better */
+code {
+   background: none;
+   box-shadow: none;
+}
+pre code {
+   text-decoration: none;
+}
+
+/* sidebar boxes take up space for no good reason */
+/* #sidebar-boxes { display: none; } */
+
 /* make the site title height more reasonable */
 #site-title, #site-description { line-height: 75px; margin-bottom: 0px; }
 #social-media-icons { margin-top: 25px; }
@@ -157,7 +169,7 @@ div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
         top:0;
         left:0;
         width:100%;
-	height:200px;
+	height:225px;
 	opacity:0.4;
 }  
 
