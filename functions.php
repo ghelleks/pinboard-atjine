@@ -1,6 +1,49 @@
 <?php
 
-/* fix possibly broken URLs for oembed */
+/*
+ * We get a syndicated feed from Tumblr (using tumblr-rss)
+ * This extracts the post format from the list of categories.
+ */
+if ( ! function_exists( 'add_post_format_feedwordpress_syndicated_post' ) ) {
+add_filter( 'syndicated_post' , 'add_post_format_feedwordpress_syndicated_post' ); 
+function add_post_format_feedwordpress_syndicated_post ( $data ) {
+	$feed = $data['tax_input']['syndication_feed'];
+	$tag_ids = $data['tax_input']['post_tag'];
+   $format = '';
+
+   // maybe someday we'd check if this feed is tumblr or not.
+
+   foreach ($tag_ids as $tag_id) {
+      $tag = get_term_by('id', $tag_id, 'post_tag');
+
+		print_r($tag);
+
+		switch ($tag->slug) {
+			# aside, chat, gallery, link, image, quote, status, video
+			case 'format-regular': $format = ''; break;
+			case 'format-link': $format = 'link'; break;
+			case 'format-quote'; $format = 'quote'; break;
+			case 'format-photo': $format = 'image'; break;
+			case 'format-conversation': $format = 'chat'; break;
+			case 'format-video': $format = 'video'; break;
+			case 'format-audio': $format = 'audio'; break;
+			case 'format-answer': $format = 'aside'; break;
+		}
+   }
+   
+   if (! empty($format) ) {
+      // announce our post format
+	   $data['tax_input']['post_format'] = 'post-format-' . $format;
+      // remove the format-* tag from the list of tags
+		unset($data['tax_input']['post_tag'][$tag_id]);
+	}
+
+	print_r($data);
+ 
+	return $data;
+} }
+ 
+/* fix possibly broken content that hides URLs from the oembed functions */
 add_filter('the_content', 'pinboard_ensure_oembed', 1);
 function pinboard_ensure_oembed($content) {
     return preg_replace('/^\s*<[^>]*>(http.*)<[^>]*>\s*$/im', '\1' . "\n", $content);
