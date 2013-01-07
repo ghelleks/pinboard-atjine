@@ -59,7 +59,7 @@ article.format-quote p a[rel=bookmark] {
 }
 
 /* add clever arrow to twitter links at the bottom of the thumbnail to indicate clicky-ness */
-a[data-datetime]:before { content: "→ "; }
+a[data-datetime]:before { content: "\2192"; }
 blockquote.twitter-tweet a[data-datetime] { 
   float:right; font-style: normal; 
 font-family: 'Open Sans', sans-serif;
@@ -183,16 +183,15 @@ div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
  */
 
 /* make sure the meta-information on each event lines up properly. */
-div#tribe-events-event-meta dt {
-	margin-bottom: 12px;
-}
-
-div#tribe-events-event-meta dd {
-	margin-bottom: 12px;
-}
+div#tribe-events-event-meta dt { margin-bottom: 12px; }
+div#tribe-events-event-meta dd { margin-bottom: 12px; }
 
 /* don't show category, nobody cares */
 div#tribe-events-event-meta dt.category-label,
 div#tribe-events-event-meta dd.category-meta {
 	display: none;
 }
+
+/* add arrows */
+div.navlink.tribe-previous:before  { content: "\2190"; }
+div.navlink.tribe-next:after { content: "\2192"; }
