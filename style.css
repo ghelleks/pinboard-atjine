@@ -178,3 +178,21 @@ div.yarpp-thumbnails-horizontal a.yarpp-thumbnail  { border: none; }
         background:rgba(0, 0, 0, .65);
 }
 
+/*
+ * Event stuff
+ */
+
+/* make sure the meta-information on each event lines up properly. */
+div#tribe-events-event-meta dt {
+	margin-bottom: 12px;
+}
+
+div#tribe-events-event-meta dd {
+	margin-bottom: 12px;
+}
+
+/* don't show category, nobody cares */
+div#tribe-events-event-meta dt.category-label,
+div#tribe-events-event-meta dd.category-meta {
+	display: none;
+}
