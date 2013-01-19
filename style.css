@@ -15,6 +15,29 @@ Version:        0.1.0
  * Generic theme stuff
  * /
 
+/* let us use figures */
+single-post section#content.onecol article.format-standard figure pre {
+	text-overflow: ellipsis;
+	margin: 1%;
+}
+single-post section#content.onecol article.format-standard figure {
+   width: 75%;
+   display: block;
+   clear: both;
+   background: white;
+   border-bottom: #DDD 1px solid;
+   box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+   -webkit-margin-before: 1em;
+   -webkit-margin-after: 1em;
+   margin-left: auto;
+   margin-right: auto;
+}
+article figcaption {
+   text-align: center;
+   font-style: italic;
+   font-size: small;
+}
+
 /* make the code blocks look a lot better */
 code {
    background: none;
@@ -32,7 +55,7 @@ pre code {
 #social-media-icons { margin-top: 25px; }
 #header #searchform { margin-top: 25px; }
 
-/* fix the width */
+/* fix the overall width */
 #wrapper {
 	max-width: 95%;
 }
@@ -45,12 +68,19 @@ section#content.onecol article.format-quote .entry-content {
 }
 
 /* center attachment and "image" post format photos */
-.page-template-template-full-width-php article.format-image .entry-content img,
+.page-template-template-full-width-php article.format-image .entry-content .wp_post_image,
 .page-template-template-full-width-php .hentry.onecol figure.entry-attachment {
    float: none;
    display: block;
    margin-left: auto;
    margin-right: auto;
+}
+
+/* for regular posts, the thumbnail shouldn't be so big. */
+.page-template-template-full-width-php article.format-standard figure.entry-thumbnail .wp-post-image {
+   padding: 5%;
+	width: 90%;
+	overflow: hidden;
 }
 
 /* scoot quote links in thumbnail view over to the right so they look more quote-y */
@@ -81,13 +111,51 @@ blockquote.twitter-tweet p a { word-wrap: break-word; }
 /* 
  * Lazyest Gallery stuff
  */
-/* make attachment pages display centered  */
-/* remove the godawful folders display from Lazyest Gallery */
-.lg_gallery .dir_view .folder { display:none; }
-.lg_gallery .top_navigator { display:none; }
 
-/* based on pinboard "entry" */
-.lg_gallery .dir_view  li.lgf-item {
+/* remove the godawful folders display from Lazyest Gallery */
+.lg_gallery .dir_view .folder { display:none; } 
+
+/* if we don't do this, the subfolders and the items overlap and you can't click on the subfolder */
+ul.lgf-list { display: inline-block; }
+ul.lgi-list { display: inline-block; }
+
+/* we'll let the navigator replace the superfluous gallery title. */
+.folder_caption h3 { display: none; }
+.lg_gallery .top_navigator { 
+   font-family: "Oswald",sans-serif;
+   font-weight: 300;
+   overflow: hidden;
+   line-height: 1.62em;
+	margin-top: -20px; /* ew. */
+	margin-bottom: 20px;
+}
+
+/* make all the fonts look sensible */
+.lg_gallery .folder_description {
+   font-family: "Oswald",sans-serif;
+   font-weight: 300;
+   letter-spacing: 1px;
+   overflow: hidden;
+}
+.lg_gallery .caption {
+	font-family: "Oswald",sans-serif;
+	font-size: 24px;
+	font-weight: 300;
+	letter-spacing: 1px;
+	line-height: 1.62em;
+}
+.lg_gallery p.exifheader {
+	font-family: "Oswald",sans-serif;
+	font-weight: 300;
+	font-size: 18px;
+}
+
+.lg_gallery .folders .dir_view .lgf-list {
+   width: 100%;
+}
+
+/* display folder thumbs, based on pinboard "entry" */
+.lg_gallery .folders .dir_view .lgf-list .lgf-item {
    float: left;
    display: block;
    background: white;
@@ -95,17 +163,23 @@ blockquote.twitter-tweet p a { word-wrap: break-word; }
    box-shadow: 0 0 5px rgba(0, 0, 0, .1);
    -webkit-margin-before: 1em;
    -webkit-margin-after: 1em;
-   -webkit-margin-start: 40px;
-   -webkit-margin-end: 40px;
-   width: 250px;
-   margin: 3%;
+   width: 30%;
+	margin: 1%;
+}
+
+/* display item thumbs */
+.lg_gallery .dir_view .lgi-list .lgi-item {
+   -webkit-margin-before: 1em;
+   -webkit-margin-after: 1em;
+	margin: 1%;
 }
 
 .lg_thumb {
    padding: inherit;
-   margin: inherit;
 }
 
+/* make the folders and the thumbs the same size */
+div.lg_thumb_image img.thumb,
 div.lg_folder_thumb_image img.thumb {
    width: 100%;
    height: 205;
