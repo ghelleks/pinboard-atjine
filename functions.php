@@ -13,29 +13,36 @@ function add_post_format_feedwordpress_syndicated_post ( $data ) {
 
    // maybe someday we'd check if this feed is tumblr or not.
 
+	// look through the tags for a "format-*" so we can alter the post format accordingly
    foreach ($tag_ids as $tag_id) {
-      $tag = get_term_by('id', $tag_id, 'post_tag');
+		if (empty($format)) {
+	      $tag = get_term_by('id', $tag_id, 'post_tag');
 
-		print_r($tag);
+			//print_r($tag);
 
-		switch ($tag->slug) {
-			# aside, chat, gallery, link, image, quote, status, video
-			case 'format-regular': $format = ''; break;
-			case 'format-link': $format = 'link'; break;
-			case 'format-quote'; $format = 'quote'; break;
-			case 'format-photo': $format = 'image'; break;
-			case 'format-conversation': $format = 'chat'; break;
-			case 'format-video': $format = 'video'; break;
-			case 'format-audio': $format = 'audio'; break;
-			case 'format-answer': $format = 'aside'; break;
+			switch ($tag->slug) {
+				# aside, chat, gallery, link, image, quote, status, video
+				case 'format-regular': $format = ''; break;
+				case 'format-link': $format = 'link'; break;
+				case 'format-quote'; $format = 'quote'; break;
+				case 'format-photo': $format = 'image'; break;
+				case 'format-conversation': $format = 'chat'; break;
+				case 'format-video': $format = 'video'; break;
+				case 'format-audio': $format = 'audio'; break;
+				case 'format-answer': $format = 'aside'; break;
+			}
+
+	      // if we found a format, remove the format-* tag from the list of tags, we're done with it.
+			if (! empty($format)) {
+				unset($data['tax_input']['post_tag'][$tag_id]);
+				break; // ok, we're all done here.
+			}
 		}
    }
    
    if (! empty($format) ) {
       // announce our post format
 	   $data['tax_input']['post_format'] = 'post-format-' . $format;
-      // remove the format-* tag from the list of tags
-		unset($data['tax_input']['post_tag'][$tag_id]);
 	}
 
 	print_r($data);
@@ -393,11 +400,15 @@ function pinboard_call_scripts() { ?>
 		});
 		$(".entry-attachment, .entry-content").fitVids({ customSelector: "iframe, object, embed"});
 		<?php if( pinboard_get_option( 'lightbox' ) ) : ?>
+			/* take up a bunch of the screen, and include a link to the full image page.
+ 				this only works if you've told the Pinboard theme to display "full images with lightbox"
+			*/
 			jQuery("a[rel*='lightbox'],a.colorbox").colorbox({
 				maxHeight:"95%",
 				maxWidth:"95%",
 				transition:"elastic",
-				speed:150
+				speed:150,
+				title: function () { return this.title.link(this.href.replace('/files/lg-gallery/','/photos/')+'/'); }
 			});
 		<?php endif; ?>
 /* trying to get masonry to reflow after the twitter embed javascript loads */
