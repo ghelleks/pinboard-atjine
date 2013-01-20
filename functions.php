@@ -14,7 +14,7 @@ function add_post_format_feedwordpress_syndicated_post ( $data ) {
    // maybe someday we'd check if this feed is tumblr or not.
 
 	// look through the tags for a "format-*" so we can alter the post format accordingly
-   foreach ($tag_ids as $tag_id) {
+   foreach ($tag_ids as $i => $tag_id) {
 		if (empty($format)) {
 	      $tag = get_term_by('id', $tag_id, 'post_tag');
 
@@ -34,13 +34,17 @@ function add_post_format_feedwordpress_syndicated_post ( $data ) {
 
 	      // if we found a format, remove the format-* tag from the list of tags, we're done with it.
 			if (! empty($format)) {
-				unset($data['tax_input']['post_tag'][$tag_id]);
+				unset($data['tax_input']['post_tag'][$i]);
 				break; // ok, we're all done here.
 			}
 		}
    }
    
-   if (! empty($format) ) {
+   if (empty($format) ) {
+      // the format is "no format"
+	   unset($data['tax_input']['post_format']);
+	}
+	else {
       // announce our post format
 	   $data['tax_input']['post_format'] = 'post-format-' . $format;
 	}
