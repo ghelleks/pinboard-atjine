@@ -1,12 +1,49 @@
 <?php
 
 /*
+ * Override default pinboard title handling so feeds show up right.
+ */
+if ( ! function_exists( 'pinboard_doc_title' ) ) :
+/**
+ * Output the <title> tag
+ *
+ * @since Pinboard 1.0
+ */
+function pinboard_doc_title( $doc_title ) {
+   global $page, $paged;
+
+   if ( is_feed() ) { return $doc_title; }
+
+   $doc_title = str_replace( '&raquo;', '', $doc_title );
+   $site_description = get_bloginfo( 'description', 'display' );
+   $separator = '#124';
+   if ( is_singular() ) {
+      if( is_front_page() )
+         $doc_title .=  get_the_title();
+      if ( $paged >= 2 || $page >= 2 )
+         $doc_title .=  ', ' . __( 'Page', 'pinboard' ) . ' ' . max( $paged, $page );
+   } else {
+      if( ! is_home() )
+         $doc_title .= ' &' . $separator . '; ';
+      $doc_title .= get_bloginfo( 'name' );
+      if ( $paged >= 2 || $page >= 2 )
+         $doc_title .=  ', ' . __( 'Page', 'pinboard' ) . ' ' . max( $paged, $page );
+   }
+   if ( ( is_home() ) && $site_description )
+      $doc_title .= ' &' . $separator . '; ' . $site_description;
+   return $doc_title;
+}
+endif;
+
+/*
  * Support the Twitter Card plugin from Niall: https://github.com/niallkennedy/twitter-cards
  */
 if ( ! function_exists( 'add_twitter_card_properties' ) ) {
 add_filter( 'twitter_cards_properties', 'add_twitter_card_properties' );
 function add_twitter_card_properties( $twitter_card ) {
 	if ( is_array( $twitter_card ) ) {
+		$twitter_card['site'] = '@ghelleks';
+		$twitter_card['site:id'] = '7373472';
 		$twitter_card['creator'] = '@ghelleks';
 		$twitter_card['creator:id'] = '7373472';
 	}
