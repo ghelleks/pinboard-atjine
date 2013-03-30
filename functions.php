@@ -1,12 +1,5 @@
 <?php
 
-// disable comment feeds for individual posts
-if ( ! function_exists( 'atjine_disable_comment_rss_links' ) ) {
-add_filter('post_comments_feed_link','disablePostCommentsFeedLink');
-function atjine_disable_comment_rss_links($for_comments) {
-	return '';
-} }
-
 /*
  * Override default pinboard title handling so feeds show up right.
  */
