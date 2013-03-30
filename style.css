@@ -13,7 +13,13 @@ Version:        0.1.0
 
 /*
  * Generic theme stuff
- * /
+ */
+
+/* without this, videos take up the whole page which is crazy */
+section#content.onecol article.format-video .entry-content {
+	margin-left: 20%;
+	margin-right: 20%;
+}
 
 /* let us use figures */
 single-post section#content.onecol article.format-standard figure pre {
@@ -55,10 +61,11 @@ pre code {
 #social-media-icons { margin-top: 25px; }
 #header #searchform { margin-top: 25px; }
 
-/* fix the overall width */
+/* fix the overall width
 #wrapper {
-	max-width: 95%;
+	max-width: 75%;
 }
+*/
 
 /* writing and quotes should be a little more roomy. */
 section#content.onecol article.format-standard .entry-content,
